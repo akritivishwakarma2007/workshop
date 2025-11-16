@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Student Workshop: Computer Hardware & Security</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+  <!-- Bootstrap 4 -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <!-- Poppins Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <!-- Video.js (for hero video) -->
+  <link href="https://cdn.jsdelivr.net/npm/video.js@7.5.0/dist/video-js.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="static\css\styles.css">
+
+</head>
+<body>
+
+  <!-- HERO SECTION -->
+  <header class="hero text-center text-black">
+    <img src="https://img.freepik.com/free-vector/background-realistic-abstract-technology-particle_23-2148431735.jpg?semt=ais_incoming&w=740&q=80" alt="">
+    <div class="hero__overlay"></div>
+    <div class="container hero__content">
+      <h1 class="display-4 font-weight-bold mb-3">Computer Hardware & Security Workshop</h1>
+      <p class="lead mb-4">Hands-on learning: Build PCs, Create Bootable USBs, Simulate Malware & More!</p>
+      <a href="#register" class="btn btn-primary btn-lg">Register Now</a>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, msg in messages %}
+          <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show mt-4" role="alert">
+            {{ msg }}
+            <button type="button" class="close" data-dismiss="alert">×</button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <!-- WORKSHOP INFO -->
+    <section class="block text-center">
+      <div class="row" >
+        <div class="col-md-4 mb-4">
+          <i class="fas fa-calendar-alt topic-icon"></i>
+          <h5>Date</h5>
+          <p>December 11 - 12, 2025</p>
+        </div>
+        <div class="col-md-4 mb-4">
+          <i class="fas fa-map-marker-alt topic-icon"></i>
+          <h5>Venue</h5>
+          <p>IOT LAB , NR BUILDING</p>
+        </div>
+        <div class="col-md-4 mb-4">
+          <i class="fas fa-clock topic-icon"></i>
+          <h5>Timing</h5>
+          <p>10:00 AM – 4:00 PM</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOPICS -->
+    <section class="block">
+      <h2 class="text-center mb-5">Topics You'll Master</h2>
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <div class="text-center">
+            <i class="fas fa-usb topic-icon"></i>
+            <h5>USB & Generations</h5>
+            <p>USB 1.0 to USB4 – speeds, compatibility</p>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="text-center">
+            <i class="fas fa-plug topic-icon"></i>
+            <h5>Ports</h5>
+            <p>HDMI, USB-C, Ethernet, Audio</p>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="text-center">
+            <i class="fas fa-microchip topic-icon"></i>
+            <h5>Live PC Assembly</h5>
+            <p>CPU, RAM, SSD – build from scratch</p>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="text-center">
+            <i class="fas fa-save topic-icon"></i>
+            <h5>Bootable USB</h5>
+            <p>Create OS installers with Rufus</p>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="text-center">
+            <i class="fas fa-shield-alt topic-icon"></i>
+            <h5>Firewall</h5>
+            <p>Windows & Linux firewall setup</p>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="text-center">
+            <i class="fas fa-bug topic-icon"></i>
+            <h5>Virtual Machine & Malware</h5>
+            <p>Safe malware testing in VirtualBox</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REGISTRATION FORM -->
+    <section id="register" class="block bg-light py-5">
+      <div class="container">
+        <h2 class="text-center mb-5">Register for the Workshop</h2>
+        <form action="{{ url_for('register') }}" method="POST" class="needs-validation" novalidate>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <input type="text" name="name" class="form-control" placeholder="Full Name *" required>
+              <div class="invalid-feedback">Required</div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <input type="email" name="email" class="form-control" placeholder="Email Address *" required>
+              <div class="invalid-feedback">Valid email required</div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <input type="tel" name="contact" class="form-control" placeholder="Contact Number *" required>
+              <div class="invalid-feedback">Required</div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <input type="text" name="institution" class="form-control" placeholder="Educational Institution *" required>
+              <div class="invalid-feedback">Required</div>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <p><strong>Interested Topics:</strong></p>
+            {% set topics = [
+              "USB and generations of USB",
+              "Ports",
+              "Computer parts and assembling live",
+              "Bootable USB",
+              "Firewall",
+              "Virtual machine & malware attack"
+            ] %}
+            {% for topic in topics %}
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="topics" value="{{ topic }}" id="t{{ loop.index }}">
+                <label class="form-check-label" for="t{{ loop.index }}">{{ topic }}</label>
+              </div>
+            {% endfor %}
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-lg px-5">Register Now</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- INQUIRY FORM -->
+    <section class="block">
+      <div class="container">
+        <h2 class="text-center mb-5">Have a Question?</h2>
+        <form action="{{ url_for('inquire') }}" method="POST" class="needs-validation" novalidate>
+          <div class="row justify-content-center">
+            <div class="col-md-8">
+              <div class="mb-3">
+                <input type="text" name="name" class="form-control" placeholder="Your Name (Optional)">
+              </div>
+              <div class="mb-3">
+                <input type="email" name="email" class="form-control" placeholder="Email *" required>
+                <div class="invalid-feedback">Required</div>
+              </div>
+              <div class="mb-3">
+                <textarea name="question" class="form-control" rows="4" placeholder="Your Question *" required></textarea>
+                <div class="invalid-feedback">Required</div>
+              </div>
+              <button type="submit" class="btn btn-outline-primary btn-lg">Send Inquiry</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+
+   <!-- FAQ -->
+<section class="block py-5">
+  <div class="container">
+    <h2 class="text-center mb-5 font-weight-bold text-primary">Frequently Asked Questions</h2>
+    
+    <div class="accordion shadow-lg" id="faqAccordion">
+      <!-- FAQ 1 -->
+      <div class="card border-0 mb-3 rounded-lg overflow-hidden">
+        <div class="card-header bg-primary text-white p-0" id="faqHeading1">
+          <h5 class="mb-0">
+            <button class="btn btn-block text-left text-white py-3 px-4 d-flex justify-content-between align-items-center font-weight-semibold"
+                    data-toggle="collapse" data-target="#faqCollapse1" aria-expanded="true">
+              Who can attend the workshop?
+              <span class="badge badge-light rounded-circle p-2"><i class="fas fa-chevron-down"></i></span>
+            </button>
+          </h5>
+        </div>
+        <div id="faqCollapse1" class="collapse show" data-parent="#faqAccordion">
+          <div class="card-body py-3 px-4 text-muted">
+            All students from schools, colleges, or universities are welcome. No prior experience required!
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 2 -->
+      <div class="card border-0 mb-3 rounded-lg overflow-hidden">
+        <div class="card-header bg-primary text-white p-0" id="faqHeading2">
+          <h5 class="mb-0">
+            <button class="btn btn-block text-left text-white py-3 px-4 d-flex justify-content-between align-items-center font-weight-semibold collapsed"
+                    data-toggle="collapse" data-target="#faqCollapse2">
+              Is the workshop free?
+              <span class="badge badge-light rounded-circle p-2"><i class="fas fa-chevron-down"></i></span>
+            </button>
+          </h5>
+        </div>
+        <div id="faqCollapse2" class="collapse" data-parent="#faqAccordion">
+          <div class="card-body py-3 px-4 text-muted">
+            Yes! The workshop is <strong>completely free</strong> for all registered participants.
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 3 -->
+      <div class="card border-0 mb-3 rounded-lg overflow-hidden">
+        <div class="card-header bg-primary text-white p-0" id="faqHeading3">
+          <h5 class="mb-0">
+            <button class="btn btn-block text-left text-white py-3 px-4 d-flex justify-content-between align-items-center font-weight-semibold collapsed"
+                    data-toggle="collapse" data-target="#faqCollapse3">
+              What should I bring?
+              <span class="badge badge-light rounded-circle p-2"><i class="fas fa-chevron-down"></i></span>
+            </button>
+          </h5>
+        </div>
+        <div id="faqCollapse3" class="collapse" data-parent="#faqAccordion">
+          <div class="card-body py-3 px-4 text-muted">
+            Just bring a notebook, pen, and curiosity! Laptops are optional but helpful for hands-on demos.
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ 4 (Bonus) -->
+      <div class="card border-0 mb-3 rounded-lg overflow-hidden">
+        <div class="card-header bg-primary text-white p-0" id="faqHeading4">
+          <h5 class="mb-0">
+            <button class="btn btn-block text-left text-white py-3 px-4 d-flex justify-content-between align-items-center font-weight-semibold collapsed"
+                    data-toggle="collapse" data-target="#faqCollapse4">
+              Will I get a certificate?
+              <span class="badge badge-light rounded-circle p-2"><i class="fas fa-chevron-down"></i></span>
+            </button>
+          </h5>
+        </div>
+        <div id="faqCollapse4" class="collapse" data-parent="#faqAccordion">
+          <div class="card-body py-3 px-4 text-muted">
+            Yes! All participants will receive a <strong>digital certificate of participation</strong> via email.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <!-- FOOTER -->
+  <footer class="text-center">
+    <div class="container">
+      <p>&copy; 2025 Student Workshop. All rights reserved.</p>
+      <p>Made for tech learners</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/video.js@7.5.0/dist/video.min.js"></script>
+
+  <!-- Form Validation -->
+  <script>
+    (function() {
+      'use strict';
+      window.addEventListener('load', function() {
+        var forms = document.getElementsByClassName('needs-validation');
+        Array.prototype.filter.call(forms, function(form) {
+          form.addEventListener('submit', function(event) {
+            if (form.checkValidity() === false) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+          }, false);
+        });
+      }, false);
+    })();
+  </script>
+</body>
+</html>
