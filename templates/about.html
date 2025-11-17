@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About Workshop - Power ON: Inside The Machine</title>
+
+  <!-- Bootstrap 4 + Font Awesome + Fonts -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    body { font-family: 'Poppins', sans-serif; background: #0f0f1a; color: #e0e0e0; padding-top: 80px; }
+    .navbar { background: #000 !important; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+    .hero-mini { background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('https://img.freepik.com/free-vector/3d-style-black-background-with-paper-layer_206725-669.jpg') center/cover no-repeat; padding: 100px 0; text-align: center; color: white; }
+    .topic-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(0,123,255,0.3); border-radius: 20px; padding: 30px; text-align: center; transition: all 0.4s; backdrop-filter: blur(10px); }
+    .topic-card:hover { transform: translateY(-15px); box-shadow: 0 20px 40px rgba(0,123,255,0.2); border-color: #007bff; }
+    .topic-icon { font-size: 3.5rem; color: #00d4ff; margin-bottom: 20px; }
+    .section-title { font-weight: 900; font-size: 2.8rem; background: linear-gradient(90deg, #00d4ff, #007bff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  </style>
+</head>
+<body>
+
+  <!-- Fixed Navbar -->
+  <nav class="navbar navbar-dark fixed-top shadow-lg">
+    <a class="navbar-brand font-weight-bold" href="/">
+      <i class="fas fa-bolt text-warning"></i> Power ON Workshop
+    </a>
+    <a href="/" class="btn btn-outline-info btn-sm">← Back to Home</a>
+  </nav>
+
+  <!-- Mini Hero -->
+  <div class="hero-mini">
+    <div class="container">
+      <h1 class="display-3 font-weight-bold">Inside The Machine</h1>
+      <p class="lead">A 2-Day Hands-on Journey into Computer Hardware & Cybersecurity</p>
+      <p class="h5">December 11 – 12, 2025 | IOT LAB, NR Building | 10:00 AM – 4:00 PM</p>
+    </div>
+  </div>
+
+  <div class="container my-5">
+
+    <!-- Workshop Highlights -->
+    <div class="row text-center mb-5">
+      <div class="col-md-4">
+        <div class="topic-card">
+          <i class="fas fa-calendar-alt topic-icon"></i>
+          <h4>2 Full Days</h4>
+          <p>December 11 – 12, 2025</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="topic-card">
+          <i class="fas fa-map-marker-alt topic-icon"></i>
+          <h4>Venue</h4>
+          <p>IOT LAB, NR Building</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="topic-card">
+          <i class="fas fa-certificate topic-icon"></i>
+          <h4>Certificate</h4>
+          <p>Digital Certificate for All</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Topics Section -->
+    <h2 class="text-center section-title mb-5">What You'll Master</h2>
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <div class="topic-card h-100">
+          <i class="fas fa-usb topic-icon"></i>
+          <h5>USB & Generations</h5>
+          <p>From USB 1.0 to USB4 – speeds, connectors, real-world use</p>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="topic-card h-100">
+          <i class="fas fa-plug topic-icon"></i>
+          <h5>All Ports Explained</h5>
+          <p>HDMI, USB-C, DisplayPort, Ethernet, Audio jacks</p>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="topic-card h-100">
+          <i class="fas fa-microchip topic-icon"></i>
+          <h5>Live PC Assembly</h5>
+          <p>Build a full gaming/workstation PC from scratch</p>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="topic-card h-100">
+          <i class="fas fa-save topic-icon"></i>
+          <h5>Bootable USB Creation</h5>
+          <p>Make Windows/Linux installers using Rufus & Ventoy</p>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="topic-card h-100">
+          <i class="fas fa-shield-alt topic-icon"></i>
+          <h5>Firewall Configuration</h5>
+          <p>Block threats on Windows & Linux like a pro</p>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="topic-card h-100">
+          <i class="fas fa-bug topic-icon"></i>
+          <h5>Virtual Machines & Malware</h5>
+          <p>Safely test viruses in VirtualBox sandbox</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- NEW ULTRA-ATTRACTIVE FAQ (ONLY THIS PART CHANGED) -->
+    <h2 class="text-center section-title mt-5 mb-5">Frequently Asked Questions</h2>
+    <div class="accordion shadow-lg" id="faqAccordion">
+
+      {% set faqs = [
+        ("Who can attend the workshop?", "All students from schools, colleges, and universities are welcome. No prior experience required!"),
+        ("Is the workshop free?", "Yes! The workshop is <strong>completely free</strong> for all registered participants."),
+        ("What should I bring?", "Just bring a notebook, pen, and curiosity! Laptops are optional but helpful for hands-on demos."),
+        ("Will I get a certificate?", "Yes! All participants will receive a <strong>digital certificate of participation</strong> via email."),
+        ("Is there food?", "Yes! Snacks and refreshments will be provided during breaks."),
+        ("Can I attend only one day?", "Recommended both days, but you can attend either day independently.")
+      ] %}
+
+      {% for q, a in faqs %}
+      <div class="card bg-dark border-0 mb-3 rounded-lg overflow-hidden" style="border: 1px solid rgba(0,255,255,0.4) !important;">
+        <div class="card-header bg-gradient p-0" id="faqHeading{{ loop.index }}">
+          <h5 class="mb-0">
+            <button class="btn btn-block text-left text-white py-4 px-5 d-flex justify-content-between align-items-center font-weight-bold collapsed"
+                    data-toggle="collapse" data-target="#faqCollapse{{ loop.index }}">
+              <span style="background: linear-gradient(90deg, #00ffff, #ff00ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                {{ q }}
+              </span>
+              <i class="fas fa-chevron-down fa-lg" style="color:#00ffff; transition:0.4s;"></i>
+            </button>
+          </h5>
+        </div>
+        <div id="faqCollapse{{ loop.index }}" class="collapse" data-parent="#faqAccordion">
+          <div class="card-body py-4 px-5" style="background:rgba(0,255,255,0.05); color:#ccffff;">
+            {{ a | safe }}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <style>
+      .card-header { background: linear-gradient(135deg, rgba(0,255,255,0.2), rgba(255,0,255,0.2)) !important; }
+      .card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,255,255,0.3) !important; }
+      .card:hover .fa-chevron-down { color:#ff00ff !important; transform:rotate(180deg); }
+      button[aria-expanded="true"] .fa-chevron-down { transform:rotate(180deg); color:#ff00ff; }
+    </style>
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center text-muted py-5">
+    <div class="container">
+      <p class="mb-0">&copy; 2025 Power ON Workshop • Made with <i class="fas fa-heart text-danger"></i> for Future Techies</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</body>
+</html>

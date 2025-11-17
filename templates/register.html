@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Register - Power ON Workshop</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #e2e8f0;
+      min-height: 100vh;
+    }
+    .navbar {
+      background: rgba(15, 23, 42, 0.95) !important;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    .register-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 40px 20px;
+    }
+    .register-card {
+      background: rgba(30, 41, 59, 0.85);
+      border-radius: 20px;
+      padding: 50px 40px;
+      max-width: 850px;
+      margin: 0 auto;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      backdrop-filter: blur(12px);
+    }
+    h1 {
+      font-size: 3.2rem;
+      font-weight: 700;
+      color: #00d4ff;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      text-align: center;
+      font-size: 1.3rem;
+      color: #94a3b8;
+      margin-bottom: 40px;
+    }
+    .form-label {
+      color: #e2e8f0;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .form-control {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid #475569;
+      color: white;
+      border-radius: 12px;
+      padding: 12px 16px;
+    }
+    .form-control:focus {
+      background: rgba(15, 23, 42, 0.9);
+      border-color: #00d4ff;
+      box-shadow: 0 0 0 0.2rem rgba(0, 212, 255, 0.25);
+      color: white;
+    }
+    .btn-register {
+      background: linear-gradient(to right, #00d4ff, #0099cc);
+      color: white;
+      font-weight: 600;
+      font-size: 1.3rem;
+      padding: 14px 50px;
+      border-radius: 50px;
+      border: none;
+      letter-spacing: 1px;
+      transition: all 0.3s;
+    }
+    .btn-register:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0, 212, 255, 0.4);
+    }
+    .required::after {
+      content: " *";
+      color: #f87171;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="/">
+        <i class="fas fa-bolt text-warning"></i> Power ON Workshop
+      </a>
+      <a href="/" class="btn btn-outline-light btn-sm">← Home</a>
+    </div>
+  </nav>
+
+  <div class="register-container">
+    <div class="register-card">
+      <h1>Register Now</h1>
+      <p class="subtitle">Secure your seat for the 2-day hands-on workshop</p>
+
+      <!-- Flash Messages -->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, msg in messages %}
+            <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show">
+              {{ msg }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <form action="{{ url_for('register') }}" method="POST" class="needs-validation" novalidate>
+        <div class="row g-4">
+          <!-- Full Name Split -->
+          <div class="col-md-4">
+            <label class="form-label required">Surname</label>
+            <input type="text" name="surname" class="form-control" required>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label required">First Name</label>
+            <input type="text" name="firstname" class="form-control" required>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Last Name</label>
+            <input type="text" name="lastname" class="form-control">
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label required">Student ID</label>
+            <input type="text" name="studentid" class="form-control" placeholder="e.g. 20231001" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label required">Department / Class</label>
+            <input type="text" name="department" class="form-control" placeholder="e.g. SYBSc.IT, FYBCA" required>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label required">Email</label>
+            <input type="email" name="email" class="form-control" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label required">Contact Number</label>
+            <input type="tel" name="contact" class="form-control" placeholder="10-digit mobile" required>
+          </div>
+
+          <div class="col-12 text-center mt-5">
+            <button type="submit" class="btn btn-register">
+              <i class="fas fa-check-circle"></i> Complete Registration
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <div class="text-center mt-4 text-muted">
+        <small>Free Entry • Certificate Provided • Limited Seats</small>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Bootstrap validation
+    (function () {
+      'use strict'
+      var forms = document.querySelectorAll('.needs-validation')
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+          form.classList.add('was-validated')
+        }, false)
+      })
+    })()
+  </script>
+</body>
+</html>
