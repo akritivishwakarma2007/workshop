@@ -4,60 +4,79 @@ from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 import os
 import json
+import sys
 
 app = Flask(__name__)
 app.secret_key = 'poweronworkshop2025_secret_key_123!@#'
 
-# ==================== GOOGLE SHEETS SETUP ====================
+# ==================== GOOGLE SHEETS CREDENTIALS ====================
 SCOPE = [
     "https://spreadsheets.google.com/feeds",
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive"
 ]
 
-# For Render/Railway: use environment variable | Local: use JSON file
-if os.getenv("GOOGLE_json_key"):
-    creds_dict = json.loads(os.getenv("GOOGLE_json_key"))
-    creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, SCOPE)
+json_key_content = os.getenv("GOOGLE_JSON_KEY")
+
+if json_key_content:
+    # === DEPLOYED ON RENDER / RAILWAY ===
+    print("Using GOOGLE_JSON_KEY from environment (live server)")
+    try:
+        creds_dict = json.loads(json_key_content)
+        creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, SCOPE)
+    except Exception as e:
+        print("ERROR: Invalid GOOGLE_JSON_KEY format!")
+        print(e)
+        sys.exit(1)
 else:
-    # Local testing → make sure gsheet-bot.json is in project folder
-    creds = ServiceAccountCredentials.from_json_keyfile_name("gsheet-bot.json", SCOPE)
+    # === LOCAL TESTING ===
+    json_file = "gsheet-bot.json"
+    if os.path.exists(json_file):
+        print(f"Using local {json_file}")
+        creds = ServiceAccountCredentials.from_json_keyfile_name(json_file, SCOPE)
+    else:
+        print(f"ERROR: {json_file} not found in project folder!")
+        print("→ For local run: Place gsheet-bot.json here")
+        print("→ For Render/Railway: Add GOOGLE_JSON_KEY in Environment Variables")
+        sys.exit(1)
 
-client = gspread.authorize(creds)
+# Connect to Google Sheets
+try:
+    client = gspread.authorize(creds)
+    print("Connected to Google Sheets successfully!")
+except Exception as e:
+    print("Failed to connect to Google Sheets:", e)
+    sys.exit(1)
 
-# YOUR GOOGLE SHEET ID (DO NOT CHANGE UNLESS YOU MAKE NEW SHEET)
+# ==================== OPEN SHEET ====================
 SHEET_ID = "1_VvHyhxbZoICb3zVfiyORabGA3lCWGKihi4GjNv47Jk"
+try:
+    spreadsheet = client.open_by_key(SHEET_ID)
+    reg_sheet = spreadsheet.worksheet("Registrations")
+    inq_sheet = spreadsheet.worksheet("Inquiries")
+except Exception as e:
+    print("Cannot open Google Sheet. Check SHEET_ID and sharing settings.")
+    print(e)
+    sys.exit(1)
 
-# Open sheet and tabs
-spreadsheet = client.open_by_key(SHEET_ID)
-reg_sheet = spreadsheet.worksheet("Registrations")
-inq_sheet = spreadsheet.worksheet("Inquiries")
-
-# ==================== AUTO-FIX HEADERS (Runs every time app starts) ====================
+# ==================== AUTO-FIX HEADERS ====================
 def ensure_headers():
-    # Correct headers for Registrations
-    correct_reg = ["Timestamp", "Surname", "First Name", "Middle Name",
+    reg_headers = ["Timestamp", "Surname", "First Name", "Middle Name",
                    "Student ID", "Department/Class", "Email", "Contact Number"]
-    current_reg = reg_sheet.row_values(1)
-    
-    if current_reg != correct_reg:
-        print("Fixing 'Registrations' headers...")
-        reg_sheet.resize(rows=1)  # Clear all data (only headers will remain)
-        reg_sheet.append_row(correct_reg)
-        print("Registrations headers fixed!")
+    inq_headers = ["Timestamp", "Name", "Email", "Question"]
 
-    # Correct headers for Inquiries
-    correct_inq = ["Timestamp", "Name", "Email", "Question"]
-    current_inq = inq_sheet.row_values(1)
-    
-    if current_inq != correct_inq:
-        print("Fixing 'Inquiries' headers...")
+    if reg_sheet.row_values(1) != reg_headers:
+        print("Fixing Registrations headers...")
+        reg_sheet.resize(rows=1)
+        reg_sheet.append_row(reg_headers)
+
+    if inq_sheet.row_values(1) != inq_headers:
+        print("Fixing Inquiries headers...")
         inq_sheet.resize(rows=1)
-        inq_sheet.append_row(correct_inq)
-        print("Inquiries headers fixed!")
+        inq_sheet.append_row(inq_headers)
 
-# Run this every time the app starts → protects your sheet forever
 ensure_headers()
+print("Headers are perfect!")
 
 # ==================== ROUTES ====================
 @app.route('/')
@@ -79,22 +98,20 @@ def register():
         email = request.form.get('email', '').strip()
         contact = request.form.get('contact', '').strip()
 
-        # Required fields check
         if not all([surname, firstname, studentid, department, email, contact]):
             flash('Please fill all required fields!', 'error')
             return redirect(url_for('register'))
 
         try:
-            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            row = [timestamp, surname, firstname, middlename, studentid, department, email, contact]
+            row = [datetime.now().strftime("%Y-%m-%d %H:%M:%S"), surname, firstname, middlename,
+                   studentid, department, email, contact]
             reg_sheet.append_row(row)
-            flash('Thank you for registering! See you at the workshop!', 'success')
+            flash('Registration successful! Welcome to Power ON!', 'success')
         except Exception as e:
-            flash('Registration failed. Please try again.', 'error')
-            print("Registration error:", e)
+            flash('Registration failed. Try again.', 'error')
+            print("Reg error:", e)
 
         return redirect(url_for('register'))
-
     return render_template('register.html')
 
 @app.route('/inquire', methods=['GET', 'POST'])
@@ -109,23 +126,20 @@ def inquire():
             return redirect(url_for('inquire'))
 
         try:
-            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            row = [timestamp, name or "Anonymous", email, question]
+            row = [datetime.now().strftime("%Y-%m-%d %H:%M:%S"), name or "Anonymous", email, question]
             inq_sheet.append_row(row)
-            flash('Thank you! We received your question.', 'success')
+            flash('Message sent! We’ll reply soon.', 'success')
         except Exception as e:
-            flash('Failed to send message. Try again.', 'error')
+            flash('Failed to send. Try again.', 'error')
             print("Inquiry error:", e)
 
         return redirect(url_for('inquire'))
-
     return render_template('inquire.html')
 
-# ==================== RUN APP ====================
+# ==================== RUN ====================
 if __name__ == '__main__':
-    if not os.path.exists('templates'):
-        print("ERROR: 'templates' folder not found! Create it and add HTML files.")
-    else:
-        print("Power ON Workshop Website is running!")
-        print("Visit: http://127.0.0.1:5000")
+    print("="*60)
+    print("POWER ON WORKSHOP WEBSITE IS LIVE!")
+    print("Visit: http://127.0.0.1:5000")
+    print("="*60)
     app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
