@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 import json
 import sys
@@ -19,31 +19,29 @@ SCOPE = [
 json_key_content = os.getenv("GOOGLE_JSON_KEY")
 
 if json_key_content:
-    # === DEPLOYED ON RENDER / RAILWAY ===
-    print("Using GOOGLE_JSON_KEY from environment (live server)")
+    print("Using GOOGLE_JSON_KEY from environment (Live on Render/Railway)")
     try:
         creds_dict = json.loads(json_key_content)
         creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, SCOPE)
     except Exception as e:
-        print("ERROR: Invalid GOOGLE_JSON_KEY format!")
+        print("ERROR: Invalid GOOGLE_JSON_KEY!")
         print(e)
         sys.exit(1)
 else:
-    # === LOCAL TESTING ===
     json_file = "gsheet-bot.json"
     if os.path.exists(json_file):
         print(f"Using local {json_file}")
         creds = ServiceAccountCredentials.from_json_keyfile_name(json_file, SCOPE)
     else:
-        print(f"ERROR: {json_file} not found in project folder!")
-        print("→ For local run: Place gsheet-bot.json here")
+        print(f"ERROR: {json_file} not found!")
+        print("→ For local run: Place gsheet-bot.json in project folder")
         print("→ For Render/Railway: Add GOOGLE_JSON_KEY in Environment Variables")
         sys.exit(1)
 
 # Connect to Google Sheets
 try:
     client = gspread.authorize(creds)
-    print("Connected to Google Sheets successfully!")
+    print("Connected to Google Sheets!")
 except Exception as e:
     print("Failed to connect to Google Sheets:", e)
     sys.exit(1)
@@ -55,7 +53,7 @@ try:
     reg_sheet = spreadsheet.worksheet("Registrations")
     inq_sheet = spreadsheet.worksheet("Inquiries")
 except Exception as e:
-    print("Cannot open Google Sheet. Check SHEET_ID and sharing settings.")
+    print("Cannot open Google Sheet. Check ID & sharing.")
     print(e)
     sys.exit(1)
 
@@ -77,6 +75,11 @@ def ensure_headers():
 
 ensure_headers()
 print("Headers are perfect!")
+
+# ==================== INDIAN STANDARD TIME (IST) ====================
+def get_ist_time():
+    ist = datetime.now() + timedelta(hours=5, minutes=30)
+    return ist.strftime("%Y-%m-%d %H:%M:%S")
 
 # ==================== ROUTES ====================
 @app.route('/')
@@ -103,8 +106,7 @@ def register():
             return redirect(url_for('register'))
 
         try:
-            row = [datetime.now().strftime("%Y-%m-%d %H:%M:%S"), surname, firstname, middlename,
-                   studentid, department, email, contact]
+            row = [get_ist_time(), surname, firstname, middlename, studentid, department, email, contact]
             reg_sheet.append_row(row)
             flash('Registration successful! Welcome to Power ON!', 'success')
         except Exception as e:
@@ -126,7 +128,7 @@ def inquire():
             return redirect(url_for('inquire'))
 
         try:
-            row = [datetime.now().strftime("%Y-%m-%d %H:%M:%S"), name or "Anonymous", email, question]
+            row = [get_ist_time(), name or "Anonymous", email, question]
             inq_sheet.append_row(row)
             flash('Message sent! We’ll reply soon.', 'success')
         except Exception as e:
@@ -139,7 +141,7 @@ def inquire():
 # ==================== RUN ====================
 if __name__ == '__main__':
     print("="*60)
-    print("POWER ON WORKSHOP WEBSITE IS LIVE!")
-    print("Visit: http://127.0.0.1:5000")
+    print("POWER ON WORKSHOP WEBSITE IS NOW LIVE WITH INDIAN TIME!")
+    print("Local URL: http://127.0.0.1:5000")
     print("="*60)
     app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
