@@ -1,0 +1,35 @@
+# NEVER upload these — security risk!
+gsheet-bot.json
+*.json
+secret.json
+credentials.json
+key.json
+google-credentials.json
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment (if you use one)
+venv/
+env/
+.venv/
+ENV/
+
+# Environment variables file
+.env
+.env.local
+
+# IDE/Editor files
+.vscode/
+.idea/
+*.sublime-*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Flask instance folder
+instance/

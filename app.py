@@ -1,46 +1,65 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-import pandas as pd
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+from datetime import datetime
 import os
-import time
+import json
 
 app = Flask(__name__)
-app.secret_key = 'poweronworkshop2025_secret_key_123!@#'  # Change if you want
+app.secret_key = 'poweronworkshop2025_secret_key_123!@#'
 
-# Excel file paths
-REG_FILE = 'registrations.xlsx'
-INQ_FILE = 'inquiries.xlsx'
+# ==================== GOOGLE SHEETS SETUP ====================
+SCOPE = [
+    "https://spreadsheets.google.com/feeds",
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive"
+]
 
-# Safe Excel read (handles corruption)
-def safe_read_excel(filepath):
-    if not os.path.exists(filepath):
-        return pd.DataFrame()
-    try:
-        return pd.read_excel(filepath, engine='openpyxl')
-    except Exception as e:
-        print(f"Corrupted file {filepath}, recreating...")
-        try:
-            os.remove(filepath)
-        except:
-            pass
-        flash('Previous data file was corrupted and has been reset.', 'warning')
-        return pd.DataFrame()
+# For Render/Railway: use environment variable | Local: use JSON file
+if os.getenv("GOOGLE_json_key"):
+    creds_dict = json.loads(os.getenv("GOOGLE_json_key"))
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, SCOPE)
+else:
+    # Local testing → make sure gsheet-bot.json is in project folder
+    creds = ServiceAccountCredentials.from_json_keyfile_name("gsheet-bot.json", SCOPE)
 
-# Safe Excel write (handles file lock)
-def safe_write_excel(df, filepath):
-    for attempt in range(5):
-        try:
-            df.to_excel(filepath, index=False, engine='openpyxl')
-            return True
-        except PermissionError:
-            print(f"File locked, retry {attempt + 1}/5...")
-            time.sleep(1)
-        except Exception as e:
-            flash(f'Error saving data: {e}', 'error')
-            return False
-    flash('Cannot save: Excel file is open. Please close it!', 'error')
-    return False
+client = gspread.authorize(creds)
 
-# Routes
+# YOUR GOOGLE SHEET ID (DO NOT CHANGE UNLESS YOU MAKE NEW SHEET)
+SHEET_ID = "1_VvHyhxbZoICb3zVfiyORabGA3lCWGKihi4GjNv47Jk"
+
+# Open sheet and tabs
+spreadsheet = client.open_by_key(SHEET_ID)
+reg_sheet = spreadsheet.worksheet("Registrations")
+inq_sheet = spreadsheet.worksheet("Inquiries")
+
+# ==================== AUTO-FIX HEADERS (Runs every time app starts) ====================
+def ensure_headers():
+    # Correct headers for Registrations
+    correct_reg = ["Timestamp", "Surname", "First Name", "Middle Name",
+                   "Student ID", "Department/Class", "Email", "Contact Number"]
+    current_reg = reg_sheet.row_values(1)
+    
+    if current_reg != correct_reg:
+        print("Fixing 'Registrations' headers...")
+        reg_sheet.resize(rows=1)  # Clear all data (only headers will remain)
+        reg_sheet.append_row(correct_reg)
+        print("Registrations headers fixed!")
+
+    # Correct headers for Inquiries
+    correct_inq = ["Timestamp", "Name", "Email", "Question"]
+    current_inq = inq_sheet.row_values(1)
+    
+    if current_inq != correct_inq:
+        print("Fixing 'Inquiries' headers...")
+        inq_sheet.resize(rows=1)
+        inq_sheet.append_row(correct_inq)
+        print("Inquiries headers fixed!")
+
+# Run this every time the app starts → protects your sheet forever
+ensure_headers()
+
+# ==================== ROUTES ====================
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -52,29 +71,28 @@ def about():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        name = request.form.get('name')
-        email = request.form.get('email')
-        contact = request.form.get('contact')
-        institution = request.form.get('institution')
-        topics = request.form.getlist('topics')
+        surname = request.form.get('surname', '').strip()
+        firstname = request.form.get('firstname', '').strip()
+        middlename = request.form.get('middlename', '').strip()
+        studentid = request.form.get('studentid', '').strip()
+        department = request.form.get('department', '').strip()
+        email = request.form.get('email', '').strip()
+        contact = request.form.get('contact', '').strip()
 
-        if not all([name, email, contact, institution]):
+        # Required fields check
+        if not all([surname, firstname, studentid, department, email, contact]):
             flash('Please fill all required fields!', 'error')
             return redirect(url_for('register'))
 
-        new_data = {
-            'Full Name': [name],
-            'Email Address': [email],
-            'Contact Number': [contact],
-            'Educational Institution': [institution],
-            'Topics Interested In': [', '.join(topics)]
-        }
-        df_new = pd.DataFrame(new_data)
-        df_existing = safe_read_excel(REG_FILE)
-        df_final = pd.concat([df_existing, df_new], ignore_index=True)
-
-        if safe_write_excel(df_final, REG_FILE):
+        try:
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            row = [timestamp, surname, firstname, middlename, studentid, department, email, contact]
+            reg_sheet.append_row(row)
             flash('Thank you for registering! See you at the workshop!', 'success')
+        except Exception as e:
+            flash('Registration failed. Please try again.', 'error')
+            print("Registration error:", e)
+
         return redirect(url_for('register'))
 
     return render_template('register.html')
@@ -83,26 +101,31 @@ def register():
 def inquire():
     if request.method == 'POST':
         name = request.form.get('name', '').strip()
-        email = request.form.get('email')
-        question = request.form.get('question')
+        email = request.form.get('email', '').strip()
+        question = request.form.get('question', '').strip()
 
         if not email or not question:
             flash('Email and Question are required!', 'error')
             return redirect(url_for('inquire'))
 
-        new_data = {'Name': [name or 'Anonymous'], 'Email': [email], 'Question': [question]}
-        df_new = pd.DataFrame(new_data)
-        df_existing = safe_read_excel(INQ_FILE)
-        df_final = pd.concat([df_existing, df_new], ignore_index=True)
+        try:
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            row = [timestamp, name or "Anonymous", email, question]
+            inq_sheet.append_row(row)
+            flash('Thank you! We received your question.', 'success')
+        except Exception as e:
+            flash('Failed to send message. Try again.', 'error')
+            print("Inquiry error:", e)
 
-        if safe_write_excel(df_final, INQ_FILE):
-            flash('Thank you! We received your question and will reply soon.', 'success')
         return redirect(url_for('inquire'))
 
     return render_template('inquire.html')
 
+# ==================== RUN APP ====================
 if __name__ == '__main__':
-    # Create templates folder message if missing
     if not os.path.exists('templates'):
         print("ERROR: 'templates' folder not found! Create it and add HTML files.")
-    app.run(debug=True)
+    else:
+        print("Power ON Workshop Website is running!")
+        print("Visit: http://127.0.0.1:5000")
+    app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
