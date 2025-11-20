@@ -87,6 +87,22 @@
       content: " *";
       color: #f87171;
     }
+    .whatsapp-btn {
+      background: #25D366;
+      color: white;
+      font-size: 1.4rem;
+      padding: 16px 40px;
+      border-radius: 50px;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 15px;
+      box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
+    }
+    .whatsapp-btn:hover {
+      background: #128C7E;
+      transform: translateY(-3px);
+      color: white;
+    }
   </style>
 </head>
 <body>
@@ -106,12 +122,25 @@
       <h1>Register Now</h1>
       <p class="subtitle">Secure your seat for the 2-day hands-on workshop</p>
 
-      <!-- Flash Messages -->
+      <!-- SUCCESS MESSAGE + WHATSAPP JOIN BUTTON -->
       {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-          {% for category, msg in messages %}
-            <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show">
-              {{ msg }}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show mt-4">
+              <strong>{{ message }}</strong>
+              {% if category == 'success' %}
+                <hr>
+                <div class="text-center mt-3">
+                  <h4>You're In!</h4>
+                  <p>Join our official WhatsApp group for live updates, materials & announcements:</p>
+                  <a href="https://chat.whatsapp.com/L0k9PqRsTuV1aBcDeFgHiJ" 
+                     target="_blank" 
+                     class="whatsapp-btn">
+                    <i class="fab fa-whatsapp"></i> Join WhatsApp Group Instantly
+                  </a>
+                  <p class="mt-3 text-muted"><small>Click above to join automatically</small></p>
+                </div>
+              {% endif %}
               <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
           {% endfor %}
