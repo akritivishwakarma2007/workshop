@@ -103,7 +103,18 @@
       box-shadow: 0 20px 40px rgba(37, 211, 102, 0.7);
       color: white !important;
     }
-    .invalid-feedback { color: #ff6b6b; font-weight:500; }
+
+    /* LIVE RED WARNING TEXT */
+    .live-warning {
+      color: #ff3333;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-top: 6px;
+      display: none;
+    }
+    .live-warning.show {
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -159,12 +170,12 @@
             <input type="text" name="middlename" class="form-control">
           </div>
 
+          <!-- STUDENT ID WITH LIVE RED WARNING -->
           <div class="col-md-6">
             <label class="form-label required">Student ID</label>
-            <input type="text" name="studentid" class="form-control" 
-                   pattern="[0-9]+" 
-                   title="Only numbers allowed"
-                   placeholder="e.g. 20231001" required>
+            <input type="text" name="studentid" id="studentid" class="form-control" 
+                   pattern="[0-9]+" placeholder="e.g. 20231001" required>
+            <div id="studentid-warning" class="live-warning">Only numbers allowed!</div>
             <div class="invalid-feedback">
               Please enter a valid Student ID (numbers only)
             </div>
@@ -188,15 +199,14 @@
             <input type="email" name="email" class="form-control" required>
           </div>
 
+          <!-- CONTACT NUMBER WITH LIVE RED WARNING -->
           <div class="col-md-6">
             <label class="form-label required">Contact Number</label>
-            <input type="text" name="contact" class="form-control" 
-                   pattern="[6-9][0-9]{9}" 
-                   maxlength="10"
-                   placeholder="e.g. 9876543210" 
-                   title="10-digit Indian mobile number starting with 6–9" required>
+            <input type="text" name="contact" id="contact" class="form-control" 
+                   pattern="[6-9][0-9]{9}" maxlength="10" placeholder="e.g. 9876543210" required>
+            <div id="contact-warning" class="live-warning">Enter valid 10-digit number (starts with 6–9)</div>
             <div class="invalid-feedback">
-              Enter a valid 10-digit mobile number (e.g. 9876543210)
+              Enter a valid 10-digit mobile number
             </div>
           </div>
 
@@ -216,31 +226,38 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // Bootstrap validation + extra number-only behavior
-    (() => {
-      'use strict'
+    'use strict'
 
-      // Force numbers only in Student ID
-      document.querySelector('input[name="studentid"]').addEventListener('input', function(e) {
-        this.value = this.value.replace(/[^0-9]/g, '');
-      });
+    const studentIdInput = document.getElementById('studentid');
+    const studentIdWarning = document.getElementById('studentid-warning');
+    const contactInput = document.getElementById('contact');
+    const contactWarning = document.getElementById('contact-warning');
 
-      // Force numbers only + auto-format contact
-      document.querySelector('input[name="contact"]').addEventListener('input', function(e) {
-        this.value = this.value.replace(/[^0-9]/g, '').slice(0,10);
-      });
+    // Student ID - Only numbers + live red warning
+    studentIdInput.addEventListener('input', function() {
+      this.value = this.value.replace(/[^0-9]/g, '');
+      const hasNonDigit = /[^0-9]/.test(this.value);
+      studentIdWarning.classList.toggle('show', hasNonDigit || (this.value.length > 0 && this.value === ''));
+    });
 
-      // Bootstrap form validation
-      document.querySelectorAll('.needs-validation').forEach(form => {
-        form.addEventListener('submit', event => {
-          if (!form.checkValidity()) {
-            event.preventDefault()
-            event.stopPropagation()
-          }
-          form.classList.add('was-validated')
-        }, false)
-      })
-    })()
+    // Contact Number - 10 digits, starts with 6-9 + live red warning
+    contactInput.addEventListener('input', function() {
+      this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
+      const isValid = /^[6-9]\d{9}$/.test(this.value);
+      const hasInput = this.value.length > 0;
+      contactWarning.classList.toggle('show', hasInput && !isValid && this.value.length === 10);
+    });
+
+    // Bootstrap form validation
+    document.querySelectorAll('.needs-validation').forEach(form => {
+      form.addEventListener('submit', event => {
+        if (!form.checkValidity()) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
   </script>
 </body>
 </html>
