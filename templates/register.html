@@ -8,115 +8,27 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-      color: #e2e8f0;
-      min-height: 100vh;
-    }
-    .navbar {
-      background: rgba(15, 23, 42, 0.95) !important;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    }
-    .register-container {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      padding: 40px 20px;
-    }
-    .register-card {
-      background: rgba(30, 41, 59, 0.85);
-      border-radius: 20px;
-      padding: 50px 40px;
-      max-width: 850px;
-      margin: 0 auto;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
-      border: 1px solid rgba(148, 163, 184, 0.2);
-      backdrop-filter: blur(12px);
-    }
-    h1 {
-      font-size: 3.2rem;
-      font-weight: 700;
-      color: #00d4ff;
-      text-align: center;
-      margin-bottom: 8px;
-    }
-    .subtitle {
-      text-align: center;
-      font-size: 1.3rem;
-      color: #94a3b8;
-      margin-bottom: 40px;
-    }
-    .form-label {
-      color: #e2e8f0;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-    .form-control, .form-select {
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid #475569;
-      color: white;
-      border-radius: 12px;
-      padding: 12px 16px;
-    }
-    .form-control:focus, .form-select:focus {
-      background: rgba(15, 23, 42, 0.9);
-      border-color: #00d4ff;
-      box-shadow: 0 0 0 0.2rem rgba(0, 212, 255, 0.25);
-      color: white;
-    }
-    .btn-register {
-      background: linear-gradient(to right, #00d4ff, #0099cc);
-      color: white;
-      font-weight: 600;
-      font-size: 1.3rem;
-      padding: 14px 50px;
-      border-radius: 50px;
-      border: none;
-      letter-spacing: 1px;
-      transition: all 0.3s;
-    }
-    .btn-register:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 25px rgba(0, 212, 255, 0.4);
-    }
-    .required::after {
-      content: " *";
-      color: #f87171;
-    }
-    .whatsapp-btn {
-      background: linear-gradient(45deg, #25D366, #128C7E);
-      color: white !important;
-      font-weight: 700;
-      font-size: 1.4rem;
-      padding: 18px 50px;
-      border-radius: 50px;
-      text-decoration: none;
-      display: inline-block;
-      box-shadow: 0 10px 30px rgba(37, 211, 102, 0.5);
-      transition: all 0.3s ease;
-      margin-top: 15px;
-    }
-    .whatsapp-btn:hover {
-      transform: translateY(-5px) scale(1.05);
-      box-shadow: 0 20px 40px rgba(37, 211, 102, 0.7);
-      color: white !important;
-    }
-
-    /* LIVE RED WARNING */
-    .live-warning {
-      color: #ff3333;
-      font-size: 0.92rem;
-      font-weight: 600;
-      margin-top: 6px;
-      display: none;
-      animation: fadeIn 0.25s;
-    }
-    .live-warning.show {
-      display: block;
-    }
-    @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+    body {font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);color:#e2e8f0;min-height:100vh;}
+    .navbar {background:rgba(15,23,42,0.95)!important;backdrop-filter:blur(10px);box-shadow:0 4px 20px rgba(0,0,0,0.3);}
+    .register-container {min-height:100vh;display:flex;align-items:center;padding:40px 20px;}
+    .register-card {background:rgba(30,41,59,0.85);border-radius:20px;padding:50px 40px;max-width:850px;margin:0 auto;
+                    box-shadow:0 20px 50px rgba(0,0,0,0.4);border:1px solid rgba(148,163,184,0.2);backdrop-filter:blur(12px);}
+    h1 {font-size:3.2rem;font-weight:700;color:#00d4ff;text-align:center;margin-bottom:8px;}
+    .subtitle {text-align:center;font-size:1.3rem;color:#94a3b8;margin-bottom:40px;}
+    .form-label {color:#e2e8f0;font-weight:600;margin-bottom:8px;}
+    .form-control,.form-select {background:rgba(15,23,42,0.8);border:1px solid #475569;color:white;border-radius:12px;padding:12px 16px;}
+    .form-control:focus,.form-select:focus {background:rgba(15,23,42,0.9);border-color:#00d4ff;box-shadow:0 0 0 0.2rem rgba(0,212,255,0.25);color:white;}
+    .btn-register {background:linear-gradient(to right,#00d4ff,#0099cc);color:white;font-weight:600;font-size:1.3rem;padding:14px 50px;
+                   border-radius:50px;border:none;letter-spacing:1px;transition:all 0.3s;}
+    .btn-register:hover {transform:translateY(-3px);box-shadow:0 10px 25px rgba(0,212,255,0.4);}
+    .required::after {content:" *";color:#f87171;}
+    .whatsapp-btn {background:linear-gradient(45deg,#25D366,#128C7E);color:white!important;font-weight:700;font-size:1.4rem;
+                   padding:18px 50px;border-radius:50px;text-decoration:none;display:inline-block;
+                   box-shadow:0 10px 30px rgba(37,211,102,0.5);transition:all 0.3s ease;margin-top:15px;}
+    .whatsapp-btn:hover {transform:translateY(-5px) scale(1.05);box-shadow:0 20px 40px rgba(37,211,102,0.7);}
+    .live-warning {color:#ff3333;font-size:0.92rem;font-weight:600;margin-top:6px;display:none;animation:fadeIn 0.25s;}
+    .live-warning.show {display:block;}
+    @keyframes fadeIn {from{opacity:0}to{opacity:1}}
   </style>
 </head>
 <body>
@@ -124,7 +36,7 @@
   <nav class="navbar navbar-dark fixed-top">
     <div class="container">
       <a class="navbar-brand fw-bold" href="/">
-        Power ON Workshop
+        <i class="fas fa-power-off text-danger me-2"></i> Power ON Workshop
       </a>
       <a href="/" class="btn btn-outline-light btn-sm">Home</a>
     </div>
@@ -145,9 +57,11 @@
                 <hr class="my-4 border-light">
                 <div class="text-center py-4">
                   <h3 class="text-success mb-3">Registration Successful!</h3>
-                  <p class="lead mb-4">Join our official WhatsApp group:</p>
+                  <p class="mt-3 text-light"><strong>Your seat is confirmed!</strong></p>
+                  <p class="lead mb-4">Join our official WhatsApp group for live updates & materials:</p>
                   <a href="https://chat.whatsapp.com/HIYP3CX83YcACgrvYomDU6" target="_blank" class="whatsapp-btn btn shadow-lg">
-                    Join WhatsApp Group Instantly
+                    <i class="fab fa-whatsapp fa-2x align-middle"></i>
+                    <strong class="ms-3">Join WhatsApp Group Instantly</strong>
                   </a>
                 </div>
               {% endif %}
@@ -158,24 +72,13 @@
 
       <form action="{{ url_for('register') }}" method="POST" class="needs-validation" novalidate>
         <div class="row g-4">
-          <div class="col-md-4">
-            <label class="form-label required">Surname</label>
-            <input type="text" name="surname" class="form-control" required>
-          </div>
-          <div class="col-md-4">
-            <label class="form-label required">First Name</label>
-            <input type="text" name="firstname" class="form-control" required>
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">Middle Name</label>
-            <input type="text" name="middlename" class="form-control">
-          </div>
+          <div class="col-md-4"><label class="form-label required">Surname</label><input type="text" name="surname" class="form-control" required></div>
+          <div class="col-md-4"><label class="form-label required">First Name</label><input type="text" name="firstname" class="form-control" required></div>
+          <div class="col-md-4"><label class="form-label">Middle Name</label><input type="text" name="middlename" class="form-control"></div>
 
-          <!-- STUDENT ID - NORMAL TYPING + RED WARNING ON LETTERS -->
           <div class="col-md-6">
             <label class="form-label required">Student ID</label>
-            <input type="text" name="studentid" id="studentid" class="form-control" 
-                   pattern="[0-9]+" placeholder="e.g. 20231001" required>
+            <input type="text" name="studentid" id="studentid" class="form-control" pattern="[0-9]+" placeholder="e.g. 20231001" required>
             <div id="studentid-warning" class="live-warning">Only numbers allowed!</div>
           </div>
 
@@ -192,16 +95,11 @@
             </select>
           </div>
 
-          <div class="col-md-6">
-            <label class="form-label required">Email</label>
-            <input type="email" name="email" class="form-control" required>
-          </div>
+          <div class="col-md-6"><label class="form-label required">Email</label><input type="email" name="email" class="form-control" required></div>
 
-          <!-- CONTACT NUMBER - NORMAL TYPING + RED WARNING IF INVALID -->
           <div class="col-md-6">
             <label class="form-label required">Contact Number</label>
-            <input type="text" name="contact" id="contact" class="form-control" 
-                   pattern="[6-9][0-9]{9}" maxlength="10" placeholder="e.g. 9876543210" required>
+            <input type="text" name="contact" id="contact" class="form-control" pattern="[6-9][0-9]{9}" maxlength="10" placeholder="e.g. 9876543210" required>
             <div id="contact-warning" class="live-warning">Enter valid 10-digit number (starts with 6–9)</div>
           </div>
 
@@ -222,33 +120,25 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     'use strict';
-
     const studentIdInput = document.getElementById('studentid');
     const studentIdWarning = document.getElementById('studentid-warning');
     const contactInput = document.getElementById('contact');
     const contactWarning = document.getElementById('contact-warning');
 
-    // Student ID: Show red warning if any non-number is typed
     studentIdInput.addEventListener('input', function() {
       const hasNonNumber = /[^0-9]/.test(this.value);
       studentIdWarning.classList.toggle('show', hasNonNumber);
     });
 
-    // Contact Number: Show red warning if not valid 10-digit Indian number
     contactInput.addEventListener('input', function() {
       const value = this.value;
-      const isValid = /^[6-9]\d{9}$/.test(value);
       const hasWrongInput = value.length > 0 && (value.length < 10 || !/^[6-9]/.test(value) || /[^0-9]/.test(value));
       contactWarning.classList.toggle('show', hasWrongInput);
     });
 
-    // Bootstrap validation on submit
     document.querySelectorAll('.needs-validation').forEach(form => {
-      form.addEventListener('submit', event => {
-        if (!form.checkValidity()) {
-          event.preventDefault();
-          event.stopPropagation();
-        }
+      form.addEventListener('submit', e => {
+        if (!form.checkValidity()) {e.preventDefault();e.stopPropagation();}
         form.classList.add('was-validated');
       }, false);
     });
