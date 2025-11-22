@@ -4,143 +4,122 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>POWER ON - Inside The Machine • B. K. Birla College</title>
-
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@800;900&family=Exo+2:wght@700&display=swap" rel="stylesheet">
-
   <style>
     :root { --cyan: #00ffff; --magenta: #ff00ff; --electric: #00ff9d; }
     body, html { margin:0; background:#0a001f; color:white; min-height:100vh; overflow-x:hidden; }
-
-    .cosmic-bg {position:fixed; top:0; left:0; width:100%; height:100%; background:radial-gradient(circle at center,#1a0033,#000011); z-index:-2;}
-    .matrix-rain {position:fixed; top:0; left:0; width:100%; height:100%; background:repeating-linear-gradient(0deg,transparent,transparent 50px,rgba(0,255,255,0.03) 50px,rgba(0,255,255,0.03) 100px); animation:rain 12s linear infinite; z-index:-1;}
-    @keyframes rain {0%{background-position:0 0}100%{background-position:0 1000px}}
+    
+    /* REPLACED HEAVY MATRIX RAIN WITH LIGHT STATIC GLOW */
+    .cosmic-bg {
+      position:fixed; top:0; left:0; width:100%; height:100%; 
+      background:radial-gradient(circle at 30% 30%, #1a0033 0%, #0f0020 40%, #000011 100%);
+      z-index:-2;
+    }
+    .glow-lines {
+      position:fixed; top:0; left:0; width:100%; height:100%;
+      background:
+        repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(0,255,255,0.04) 40px, rgba(0,255,255,0.04) 80px),
+        repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(255,0,255,0.03) 40px, rgba(255,0,255,0.03) 80px);
+      pointer-events:none;
+      z-index:-1;
+    }
 
     .college-header {
-      background:rgba(10,0,40,0.9);
-      backdrop-filter:blur(15px);
-      padding:15px 25px;
+      background:rgba(10,0,40,0.92);
+      backdrop-filter:blur(12px);
+      padding:18px 25px;
       border-bottom:5px double var(--cyan);
-      box-shadow:0 12px 50px rgba(0,255,255,0.4);
-      margin-bottom:20px;
-      font-family:"Times New Roman", Times, serif !important;
+      box-shadow:0 10px 40px rgba(0,255,255,0.35);
+      font-family:"Times New Roman", Times, serif;
     }
-    .college-header .logo {
-      height:105px;
-      border-radius:100px;
-      border:1px solid black;
-    
-    }
-    .college-info {
-      text-align:center;
-      color:white;
-      line-height:1.4;
-      margin-right: 140px;
-    }
-    .college-name {font-size:1.9rem; font-weight:bold; margin:0 0 0px 0; letter-spacing:2px; font-family:"Times New Roman", Times, serif;}
-    .college-subtitle {font-size:1rem; margin:-5px 0; font-family:"Times New Roman", Times, serif;}
-    .naac {color:#ffffff; font-weight:bold;}
-    .dept {font-size:1.15rem; font-weight:bold; margin:10px 0 6px; font-family:"Times New Roman", Times, serif;}
-    .organizes {font-size:1.1rem; color:#00ff9d; font-style:italic; font-family:"Times New Roman", Times, serif;}
+    .college-header .logo {height:100px; border-radius:100px; border:2px solid #00ffff;}
 
+    .college-info {text-align:center; line-height:1.5;}
+    .college-name {font-size:1.9rem; font-weight:bold; letter-spacing:2px;}
+    .college-subtitle {font-size:1rem;}
+    .naac {color:#00ffff; font-weight:bold;}
+    .dept {font-size:1.2rem; font-weight:bold; margin:12px 0 6px; color:#00ff9d;}
+    .organizes {font-size:1.1rem; color:#00ff9d; font-style:italic;}
 
-    /* ——— NARROW LAYOUT ON BIG SCREENS (≥1400px) ——— */
-@media (min-width: 1400px) {
-    .container,
-    .container-lg,
-    .container-md,
-    .container-sm,
-    .container-xl,
-    .container-xxl {
-        max-width: 800px !important;   /* forces narrow center layout */
-    }
-    
-    /* Optional: extra centering polish for the main box */
-    .main-box {
-        max-width: 700px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-}
-
-
-
-    /* LOGO CLOSER TO COLLEGE NAME */
-    @media (min-width: 769px) {
-      .college-header .row {
-        align-items:center;
+    @media (min-width: 1400px) {
+      .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+        max-width: 860px !important;
       }
-      .college-header .col-auto {
-        /* padding-left: 300px;   reduced gap → logo closer */
-      }
-      .college-info {
-        /* margin-right: 270px;    reduced margin → even closer */
-      }
+      .main-box {max-width: 760px; margin:0 auto;}
     }
 
-    /* MOBILE – LOGO ON TOP (already perfect) */
-    @media (max-width: 768px) {
-      .college-header {
-        padding:20px 15px;
-        text-align:center;
-      }
-      .college-header .row {
-        flex-direction: column;
-      }
-      .college-header .col-auto {
-        margin-bottom: 8px;    /* slightly less gap below logo */
-      }
-      .college-info {
-        margin-right: 0;
-        width: 100%;
-      }
-      .college-header .logo {
-        height:70px;
-      }
-      
-    }
-
-    /* Rest of your page – 100% untouched */
     .main-container {min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px;}
-    .main-box {background:rgba(10,0,40,0.92); border-radius:32px; padding:70px 45px; text-align:center; max-width:1100px; width:100%; border:5px double var(--cyan); box-shadow:0 0 140px rgba(0,255,255,0.85); backdrop-filter:blur(18px);}
+    .main-box {
+      background:rgba(10,0,40,0.94);
+      border-radius:32px;
+      padding:70px 50px;
+      text-align:center;
+      border:5px double var(--cyan);
+      box-shadow:0 0 120px rgba(0,255,255,0.8);
+      backdrop-filter:blur(16px);
+    }
 
-    h1 {font-family:'Orbitron',sans-serif; font-size:clamp(3.2rem, 11vw, 7rem); font-weight:900; margin:0; background:linear-gradient(45deg,var(--cyan),var(--magenta),var(--electric),var(--cyan)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; text-shadow:0 0 90px rgba(0,255,255,1); letter-spacing:14px; animation:pulse 4s infinite;}
-    @keyframes pulse {0%,100%{text-shadow:0 0 90px rgba(0,255,255,1)}50%{text-shadow:0 0 160px #00ffff}}
+    h1 {
+      font-family:'Orbitron',sans-serif;
+      font-size:clamp(3.5rem, 11vw, 7.5rem);
+      font-weight:900;
+      margin:0;
+      background:linear-gradient(45deg,var(--cyan),var(--magenta),var(--electric),var(--cyan));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      text-shadow:0 0 80px rgba(0,255,255,0.9);
+      letter-spacing:12px;
+      animation:glow 4s ease-in-out infinite alternate;
+    }
+    @keyframes glow {
+      from {text-shadow:0 0 80px rgba(0,255,255,0.9);}
+      to {text-shadow:0 0 140px #00ffff, 0 0 180px #00ffff;}
+    }
 
-    h2 {font-family:'Exo 2',sans-serif; font-size:clamp(2.2rem,7vw,4.2rem); color:var(--electric); text-shadow:0 0 70px var(--electric); margin:30px 0 40px;}
+    h2 {font-family:'Exo 2',sans-serif; font-size:clamp(2.3rem,7vw,4.5rem); color:var(--electric); margin:30px 0 40px;}
 
-    .btn-container {display:flex; flex-wrap:wrap; gap:30px; justify-content:center; margin:70px 0;}
-    .btn-custom {padding:22px 30px; font-size:1.4rem; font-weight:900; text-transform:uppercase; letter-spacing:5px; border-radius:50px; min-width:300px;}
-    .btn-glitch {background:transparent; color:var(--cyan); border:5px double var(--cyan);}
-    .btn-glitch:hover {animation:glitch 0.3s infinite; transform:translateY(-12px);}
+    .btn-container {display:flex; flex-wrap:wrap; gap:32px; justify-content:center; margin:70px 0;}
+    .btn-custom {padding:22px 48px; font-size:1.45rem; font-weight:900; text-transform:uppercase; letter-spacing:5px; border-radius:50px; min-width:310px; transition:all 0.4s;}
+
+    .btn-glitch {background:transparent; color:var(--cyan); border:5px double var(--cyan); box-shadow:0 0 40px rgba(0,255,255,0.5);}
+    .btn-glitch:hover {animation:glitch 0.4s; transform:translateY(-10px);}
+
     .btn-pulse {background:linear-gradient(45deg,#ff00ff,#00ffff); color:black; position:relative; overflow:hidden;}
-    .btn-pulse::before {content:''; position:absolute; top:0; left:-100%; width:100%; height:100%; background:linear-gradient(90deg,transparent,white,transparent); animation:shine 3s infinite;}
-    .btn-holo {background:transparent; color:var(--electric); border:4px solid var(--electric); box-shadow:0 0 50px var(--electric);}
-    .btn-holo:hover {transform:translateY(-18px) scale(1.1); box-shadow:0 60px 120px rgba(0,255,157,0.9);}
-    @keyframes glitch {0%,100%{text-shadow:7px 0 #ff00ff}50%{text-shadow:-7px 0 #00ffff}}
-    @keyframes shine {0%{left:-100%}100%{left:100%}}
+    .btn-pulse::before {content:''; position:absolute; top:0; left:-100%; width:100%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent); transition:all 0.8s;}
+    .btn-pulse:hover::before {left:100%;}
 
-    .date-badge {background:linear-gradient(90deg,rgba(255,0,255,0.6),rgba(0,255,255,0.6)); border:4px solid var(--cyan); border-radius:50px; padding:18px 60px; font-size:1.7rem; box-shadow:0 0 60px rgba(0,255,255,0.7); margin:45px 0;}
-    .footer-text {margin-top:60px; font-size:1.9rem; color:var(--cyan); text-shadow:0 0 35px; font-weight:900;}
+    .btn-holo {background:transparent; color:var(--electric); border:4px solid var(--electric); box-shadow:0 0 50px var(--electric);}
+    .btn-holo:hover {transform:translateY(-16px) scale(1.08); box-shadow:0 60px 100px rgba(0,255,157,0.8);}
+
+    @keyframes glitch {0%,100%{text-shadow:5px 0 #ff00ff}50%{text-shadow:-5px 0 #00ffff}}
+
+    .date-badge {
+      background:linear-gradient(90deg,rgba(255,0,255,0.7),rgba(0,255,255,0.7));
+      border:4px solid var(--cyan);
+      border-radius:50px;
+      padding:18px 65px;
+      font-size:1.75rem;
+      box-shadow:0 0 60px rgba(0,255,255,0.7);
+      margin:50px 0;
+      display:inline-block;
+    }
+
+    .footer-text {margin-top:70px; font-size:2rem; color:var(--cyan); text-shadow:0 0 40px; font-weight:900;}
 
     @media (max-width: 768px) {
-      .college-header { padding:12px 15px; }
-      .college-header .logo { height:65px; }
-      .college-name { font-size:1.5rem; }
-      .college-subtitle { font-size:0.95rem; }
-      .dept { font-size:1.1rem; }
-      .main-box { padding:50px 25px; }
-      h1 { font-size:clamp(2.8rem, 10vw, 6rem) !important; }
-      .btn-custom { padding:18px 50px; font-size:1.0rem; min-width:260px; }
-      .date-badge { padding:14px 40px; font-size:1.4rem; }
+      .main-box {padding:50px 20px;}
+      .btn-custom {padding:18px 40px; font-size:1.1rem; min-width:280px;}
+      .date-badge {padding:14px 40px; font-size:1.4rem;}
+      .college-header .logo {height:70px;}
+      .college-name {font-size:1.6rem;}
     }
   </style>
 </head>
 <body>
-
   <div class="cosmic-bg"></div>
-  <div class="matrix-rain"></div>
+  <div class="glow-lines"></div>
 
   <div class="college-header">
     <div class="container">
@@ -152,8 +131,8 @@
           <div class="college-info">
             <div class="college-name">B. K. BIRLA COLLEGE, KALYAN</div>
             <div class="college-subtitle">'Empowered Autonomous Status'</div>
-            <div class="college-subtitle" style=" font-weight: 200;   ;">Conducted by Kalyan Citizens' Education Society</div>
-            <div class="college-subtitle" style="font-weight: bold; ">Affiliated to University of Mumbai</div>
+            <div class="college-subtitle" style="font-weight:200;">Conducted by Kalyan Citizens' Education Society</div>
+            <div class="college-subtitle" style="font-weight:bold;">Affiliated to University of Mumbai</div>
             <div class="college-subtitle">Reaccredited by NAAC (4th Cycle) with <span class="naac">A++ Grade</span> (CGPA-3.51)</div>
             <div class="dept">Department of Computer Science and Information Technology</div>
             <div class="organizes">SY B.Sc. IT organizes</div>
@@ -168,20 +147,14 @@
       <h1>POWER ON</h1>
       <h2>INSIDE THE MACHINE</h2>
       <p class="lead fs-2" style="color:#00ffff; font-weight:600;">2-Day Hands-On Hardware & System Fundamentals Workshop</p>
-
-      <div class="date-badge">
-        Dec 11–12, 2025 | IOT LAB, NR Building
-      </div>
-
+      <div class="date-badge">Dec 11–12, 2025 | IOT LAB, NR Building</div>
       <div class="btn-container">
         <a href="/about" class="btn-custom btn-glitch">Explore Workshop</a>
         <a href="/register" class="btn-custom btn-pulse">SECURE YOUR SEAT</a>
         <a href="/inquire" class="btn-custom btn-holo">Got Questions?</a>
       </div>
-
       <p class="footer-text">FREE Entry • Certificate • Live PC Build</p>
     </div>
   </div>
-
 </body>
 </html>
