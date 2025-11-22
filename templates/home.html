@@ -14,8 +14,14 @@
     body, html { margin:0; background:#0a001f; color:white; min-height:100vh; overflow-x:hidden; }
 
     .cosmic-bg {position:fixed; top:0; left:0; width:100%; height:100%; background:radial-gradient(circle at center,#1a0033,#000011); z-index:-2;}
-    .matrix-rain {position:fixed; top:0; left:0; width:100%; height:100%; background:repeating-linear-gradient(0deg,transparent,transparent 50px,rgba(0,255,255,0.03) 50px,rgba(0,255,255,0.03) 100px); z-index:-1;}
-    /* LAG KILLER: Removed animation:rain 12s linear infinite + @keyframes rain → 0% CPU usage, looks 100% same */
+   .matrix-rain {
+  position:fixed; top:0; left:0; width:100%; height:100%;
+  background: url('https://i.ibb.co/0jR2tN8/matrix-grid.png') repeat;
+  background-size: 100px 100px;
+  opacity: 0.04;
+  pointer-events: none;
+  z-index:-1;
+}
 
     .college-header {
       background:rgba(10,0,40,0.9);
