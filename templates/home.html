@@ -44,16 +44,38 @@
     .dept {font-size:1.15rem; font-weight:bold; margin:10px 0 6px; font-family:"Times New Roman", Times, serif;}
     .organizes {font-size:1.1rem; color:#00ff9d; font-style:italic; font-family:"Times New Roman", Times, serif;}
 
+
+    /* ——— NARROW LAYOUT ON BIG SCREENS (≥1400px) ——— */
+@media (min-width: 1400px) {
+    .container,
+    .container-lg,
+    .container-md,
+    .container-sm,
+    .container-xl,
+    .container-xxl {
+        max-width: 800px !important;   /* forces narrow center layout */
+    }
+    
+    /* Optional: extra centering polish for the main box */
+    .main-box {
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+
+
     /* LOGO CLOSER TO COLLEGE NAME */
     @media (min-width: 769px) {
       .college-header .row {
         align-items:center;
       }
       .college-header .col-auto {
-        padding-left: 200px;   /* reduced gap → logo closer */
+        /* padding-left: 300px;   reduced gap → logo closer */
       }
       .college-info {
-        margin-right: 250px;    /* reduced margin → even closer */
+        /* margin-right: 270px;    reduced margin → even closer */
       }
     }
 
@@ -76,6 +98,7 @@
       .college-header .logo {
         height:70px;
       }
+      
     }
 
     /* Rest of your page – 100% untouched */
@@ -104,7 +127,7 @@
     @media (max-width: 768px) {
       .college-header { padding:12px 15px; }
       .college-header .logo { height:65px; }
-      .college-name { font-size:1.7rem; }
+      .college-name { font-size:1.5rem; }
       .college-subtitle { font-size:0.95rem; }
       .dept { font-size:1.1rem; }
       .main-box { padding:50px 25px; }
@@ -128,8 +151,9 @@
         <div class="col">
           <div class="college-info">
             <div class="college-name">B. K. BIRLA COLLEGE, KALYAN</div>
-            <div class="college-subtitle">"Empowered Autonomous Status"</div>
-            <div class="college-subtitle">Affiliated to University of Mumbai</div>
+            <div class="college-subtitle">'Empowered Autonomous Status'</div>
+            <div class="college-subtitle" style=" font-weight: 200;   ;">Conducted by Kalyan Citizens' Education Society</div>
+            <div class="college-subtitle" style="font-weight: bold; ">Affiliated to University of Mumbai</div>
             <div class="college-subtitle">Reaccredited by NAAC (4th Cycle) with <span class="naac">A++ Grade</span> (CGPA-3.51)</div>
             <div class="dept">Department of Computer Science and Information Technology</div>
             <div class="organizes">SY B.Sc. IT organizes</div>
